@@ -1,2 +1,2 @@
-#A simple starter kit for front-end devs
-For use with meal.js
+#ACF Hotspots plugin
+An extension for the Advanced Custom Fields plugin for Wordpress. If you would like to use, grab the acf-hotspots folder and put it into your plugins directory.
