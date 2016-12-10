@@ -43,7 +43,7 @@ gulp.task('js', function() {
     .pipe(sourcemaps.init())
     .pipe(babel())
     .pipe(uglify())
-    .pipe(concat('all.js'))
+    .pipe(concat('acf-hotspots-render.js'))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(paths.jsDest))
     .pipe(notify('Processed JS'));

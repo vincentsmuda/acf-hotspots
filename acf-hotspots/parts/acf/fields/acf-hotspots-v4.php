@@ -1,5 +1,7 @@
 <?php
 
+// NOT SUPPORTED YET!
+
 // exit if accessed directly
 if( ! defined( 'ABSPATH' ) ) exit;
 
