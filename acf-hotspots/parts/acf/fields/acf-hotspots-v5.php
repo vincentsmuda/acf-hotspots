@@ -52,10 +52,18 @@ class acf_field_hotspots extends acf_field {
 		*/
 
 		$this->defaults = array(
-			'content' 		=> fales,
-			'sub_image' 	=> false,
-			'link' 				=> false
+			'hs_content' 		=> false,
+			'hs_sub_image' 	=> false,
+			'hs_link' 				=> false,
+			'hs_prerendered' => true
 		);
+
+
+		/*
+		*		The image field that the hotspots use
+		*/
+
+		$this->image = new acf_field_image();
 
 
 		/*
@@ -96,6 +104,7 @@ class acf_field_hotspots extends acf_field {
 
 	function render_field_settings( $field ) {
 
+
 		/**
 		 *
 		 *	Allows for user to decide whether they will allow the custom field's
@@ -106,7 +115,8 @@ class acf_field_hotspots extends acf_field {
 		acf_render_field_setting( $field, array(
 			'label'					=> __('Description','acf-hotspots'),
 			'instructions'	=> __('Allow for user to enter a description on a given spot.','acf-hotspots'),
-			'type'					=> 'checkbox',
+			'type'					=> 'true_false',
+			'ui'						=> 1,
 			'name'					=> 'hs_description'
 		));
 
@@ -121,7 +131,8 @@ class acf_field_hotspots extends acf_field {
 		acf_render_field_setting( $field, array(
 			'label'					=> __('Sub Image','acf-hotspots'),
 			'instructions'	=> __('Allow for user to insert an image on a given spot.','acf-hotspots'),
-			'type'					=> 'checkbox',
+			'type'					=> 'true_false',
+			'ui'						=> 1,
 			'name'					=> 'hs_sub_image'
 		));
 
@@ -136,8 +147,25 @@ class acf_field_hotspots extends acf_field {
 		acf_render_field_setting( $field, array(
 			'label'					=> __('Link','acf-hotspots'),
 			'instructions'	=> __('Allow for user to add a link and link text to a given spot.','acf-hotspots'),
-			'type'					=> 'checkbox',
-			'name'					=> 'hs_sub_image'
+			'type'					=> 'true_false',
+			'ui'						=> 1,
+			'name'					=> 'hs_link'
+		));
+
+
+		/**
+		 *
+		 *	Allows for user to decide whether they will allow the custom field's
+		 *	hotspot to support a link for a given hotspot.
+		 *
+		 */
+
+		acf_render_field_setting( $field, array(
+			'label'					=> __('Pre-rendered','acf-hotspots'),
+			'instructions'	=> __('Prerenders the html so you don\'t have to do the markup.','acf-hotspots'),
+			'type'					=> 'true_false',
+			'ui'						=> 1,
+			'name'					=> 'hs_prerendered'
 		));
 
 	}
@@ -161,6 +189,20 @@ class acf_field_hotspots extends acf_field {
 
 	function render_field( $field ) {
 
+		echo '<div class="acf-field acf-field-image">';
+
+			/**
+			 *	Render the image field
+			 */
+			$this->image->render_field([
+		    'name' => $field['name'] . '[image]',
+				'preview_size' => 'large',
+				'library' => 'all',
+				'mime_types'	=> '',
+				'value' => (empty($field['value']['image']) ? '' : $field['value']['image'])
+			]);
+
+		echo '</div>';
 
 		/*
 		*  Review the data of $field.
@@ -172,12 +214,13 @@ class acf_field_hotspots extends acf_field {
 		echo '</pre>';
 
 
+
 		/*
 		*  Create a simple text input using the 'font_size' setting.
 		*/
 
 		?>
-		<input type="text" name="<?php echo esc_attr($field['name']) ?>" value="<?php echo esc_attr($field['value']) ?>" style="font-size:<?php echo $field['font_size'] ?>px;" />
+		<input type="text" name="<?php echo esc_attr($field['name']) ?>[title]" value="<?php echo esc_attr($field['value']['title']) ?>" />
 		<?php
 
 	}
@@ -205,13 +248,81 @@ class acf_field_hotspots extends acf_field {
 
 
 		// register & include JS
-		wp_register_script( 'acf-input-hotspots', "{$url}assets/js/acf-hotspots-render.js", array('acf-input'), $version );
+		wp_register_script( 'acf-input-hotspots', "{$url}assets/js/acf-hotspots-render.js", array('acf-input'), $version, true );
 		wp_enqueue_script('acf-input-hotspots');
 
 
 		// register & include CSS
 		wp_register_style( 'acf-input-hotspots', "{$url}assets/css/acf-hotspots-render.css", array('acf-input'), $version );
 		wp_enqueue_style('acf-input-hotspots');
+
+	}
+
+
+	/*
+	*  format_value()
+	*
+	*  This filter is appied to the $value after it is loaded from the db and before it is returned to the template
+	*
+	*  @type	filter
+	*  @since	3.6
+	*  @date	23/01/13
+	*
+	*  @param	$value (mixed) the value which was loaded from the database
+	*  @param	$post_id (mixed) the $post_id from which the value was loaded
+	*  @param	$field (array) the field array holding all the field options
+	*
+	*  @return	$value (mixed) the modified value
+	*/
+
+
+	function format_value( $value, $post_id, $field ) {
+
+		// bail early if no value
+		if( empty($value) ) return $value;
+
+		// TODO: filter the field and create a prerendered value
+		// but only if prerendered is checked in the field settings
+		// $this->settings
+
+		// return
+		return $value;
+
+	}
+
+
+	/*
+	*  validate_value()
+	*
+	*  This filter is used to perform validation on the value prior to saving.
+	*  All values are validated regardless of the field's required setting. This allows you to validate and return
+	*  messages to the user if the value is not correct
+	*
+	*  @type	filter
+	*  @date	11/02/2014
+	*  @since	5.0.0
+	*
+	*  @param	$valid (boolean) validation status based on the value and the field's required setting
+	*  @param	$value (mixed) the $_POST value
+	*  @param	$field (array) the field array holding all the field options
+	*  @param	$input (string) the corresponding input name for $_POST value
+	*  @return	$valid
+	*/
+
+	function validate_value( $valid, $value, $field, $input ){
+
+		// TODO: Add validation on the hotspots to make sure their values are correct
+
+
+		// Advanced usage
+		// if( $value < $field['custom_minimum_setting'] )
+		// {
+		// 	$valid = __('The value is too little!','acf-hotspots'),
+		// }
+
+
+		// return
+		return $valid;
 
 	}
 
@@ -386,94 +497,6 @@ class acf_field_hotspots extends acf_field {
 	function update_value( $value, $post_id, $field ) {
 
 		return $value;
-
-	}
-
-	*/
-
-
-	/*
-	*  format_value()
-	*
-	*  This filter is appied to the $value after it is loaded from the db and before it is returned to the template
-	*
-	*  @type	filter
-	*  @since	3.6
-	*  @date	23/01/13
-	*
-	*  @param	$value (mixed) the value which was loaded from the database
-	*  @param	$post_id (mixed) the $post_id from which the value was loaded
-	*  @param	$field (array) the field array holding all the field options
-	*
-	*  @return	$value (mixed) the modified value
-	*/
-
-	/*
-
-	function format_value( $value, $post_id, $field ) {
-
-		// bail early if no value
-		if( empty($value) ) {
-
-			return $value;
-
-		}
-
-
-		// apply setting
-		if( $field['font_size'] > 12 ) {
-
-			// format the value
-			// $value = 'something';
-
-		}
-
-
-		// return
-		return $value;
-	}
-
-	*/
-
-
-	/*
-	*  validate_value()
-	*
-	*  This filter is used to perform validation on the value prior to saving.
-	*  All values are validated regardless of the field's required setting. This allows you to validate and return
-	*  messages to the user if the value is not correct
-	*
-	*  @type	filter
-	*  @date	11/02/2014
-	*  @since	5.0.0
-	*
-	*  @param	$valid (boolean) validation status based on the value and the field's required setting
-	*  @param	$value (mixed) the $_POST value
-	*  @param	$field (array) the field array holding all the field options
-	*  @param	$input (string) the corresponding input name for $_POST value
-	*  @return	$valid
-	*/
-
-	/*
-
-	function validate_value( $valid, $value, $field, $input ){
-
-		// Basic usage
-		if( $value < $field['custom_minimum_setting'] )
-		{
-			$valid = false;
-		}
-
-
-		// Advanced usage
-		if( $value < $field['custom_minimum_setting'] )
-		{
-			$valid = __('The value is too little!','acf-hotspots'),
-		}
-
-
-		// return
-		return $valid;
 
 	}
 

@@ -26,7 +26,9 @@ class acf_plugin_hotspots {
 		// vars
 		$this->settings = array(
 			'version'	=> '1.0.0',
-			'url'			=> plugin_dir_url( __FILE__ ),
+
+			// TODO: find a better way of doing this
+			'url'			=> str_replace('/parts/acf/', '/', plugin_dir_url( __FILE__ )),
 			'path'		=> plugin_dir_path( __FILE__ )
 		);
 
