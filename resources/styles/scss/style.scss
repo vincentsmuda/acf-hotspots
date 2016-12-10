@@ -1,14 +1,3 @@
-
-/*!
-Theme Name: Theme Name
-Theme URI: http://www.theurl.com/
-Description: This is the site description
-Author: NAME
-Version: 1.0
-Author URI: http://www.theurl.com
-Tags: custom
-*/
-
 /*
 
 	Config
@@ -20,44 +9,15 @@ Tags: custom
 
 /*
 
-	Vendor
-
-*/
-
-	@import "../../../node_modules/normalize.css/normalize.css";
-
-/*
-
 	Base
 
 */
 
-	@import "base/fonts";
-	@import "base/formatting";
-	@import "base/global";
-	@import "base/forms";
 	@import "base/layout";
-	@import "base/print";
 	@import "base/helpers";
-
-/*
-
-	Layout
-
-*/
-
-	@import "layouts/header";
-	@import "layouts/footer";
 
 /*
 
 	Components
 
 */
-
-	@import "components/sidetap";
-	@import "components/sticky-elements";
-	@import "navs/main";
-	@import "navs/social";
-	@import "sections/newsletter";
-

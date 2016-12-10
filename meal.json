@@ -2,9 +2,9 @@
 	"ingredients": [
 		{
 			"type": "html",
-			"output_type": "html",
+			"output_type": "php",
 			"components_as_dirs": true,
-			"path": "/public/parts/"
+			"path": "/acf-hotspots/includes/components/"
 		},
 		{
 			"type": "scss",

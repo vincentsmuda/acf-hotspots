@@ -1,7 +1,7 @@
 module.exports = (function(){
   var Paths = function(src){
       this.src = src;
-      this.dest = './public/';
+      this.dest = './acf-hotspots/';
       this.assets = this.dest+'assets/';
       this.node = './node_modules/';
 
@@ -18,8 +18,8 @@ module.exports = (function(){
       this.cssDest = this.assets+'css/';
 
       this.jsVendors = [
-        this.jsSrc + 'vendor/**/*.js',
-        this.node + 'lory.js/dist/lory.min.js'
+        // this.jsSrc + 'vendor/**/*.js',
+        // this.node + 'lory.js/dist/lory.min.js'
       ];
     },
     paths = new Paths('./resources/');

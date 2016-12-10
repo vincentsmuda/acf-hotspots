@@ -1,1 +1,0 @@
-Component specific files will go in here (ex sliders, newsletters ...)
