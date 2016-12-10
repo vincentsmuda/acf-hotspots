@@ -10,8 +10,13 @@
 	 */
 
   /**
-   *  Include helper functions
+   *  Helper functions
    */
-  include 'parts/functions/helper-functions.php';
+  include_once 'parts/functions/helpers.php';
+
+	/**
+   *  ACF entry
+   */
+  include 'parts/acf/acf-hotspots.php';
 
 ?>

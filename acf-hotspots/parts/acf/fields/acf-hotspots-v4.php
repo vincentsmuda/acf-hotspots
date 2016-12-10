@@ -9,12 +9,12 @@ if( !class_exists('acf_field_hotspots') ) :
 
 
 class acf_field_hotspots extends acf_field {
-	
+
 	// vars
 	var $settings, // will hold info such as dir / path
-		$defaults; // will hold default field options
-		
-		
+			$defaults; // will hold default field options
+
+
 	/*
 	*  __construct
 	*
@@ -23,7 +23,7 @@ class acf_field_hotspots extends acf_field {
 	*  @since	3.6
 	*  @date	23/01/13
 	*/
-	
+
 	function __construct( $settings )
 	{
 		// vars
@@ -31,22 +31,21 @@ class acf_field_hotspots extends acf_field {
 		$this->label = __('Hotspots');
 		$this->category = __("Basic",'acf'); // Basic, Content, Choice, etc
 		$this->defaults = array(
-			// add default here to merge into your field. 
+			// add default here to merge into your field.
 			// This makes life easy when creating the field options as you don't need to use any if( isset('') ) logic. eg:
 			//'preview_size' => 'thumbnail'
 		);
-		
-		
+
+
 		// do not delete!
-    	parent::__construct();
-    	
-    	
-    	// settings
+    parent::__construct();
+
+    // settings
 		$this->settings = $settings;
 
 	}
-	
-	
+
+
 	/*
 	*  create_options()
 	*
@@ -59,18 +58,18 @@ class acf_field_hotspots extends acf_field {
 	*
 	*  @param	$field	- an array holding all the field's data
 	*/
-	
+
 	function create_options( $field )
 	{
 		// defaults?
 		/*
 		$field = array_merge($this->defaults, $field);
 		*/
-		
+
 		// key is needed in the field names to correctly save the data
 		$key = $field['name'];
-		
-		
+
+
 		// Create Field Options HTML
 		?>
 <tr class="field_option field_option_<?php echo $this->name; ?>">
@@ -80,7 +79,7 @@ class acf_field_hotspots extends acf_field {
 	</td>
 	<td>
 		<?php
-		
+
 		do_action('acf/create_field', array(
 			'type'		=>	'radio',
 			'name'		=>	'fields['.$key.'][preview_size]',
@@ -91,15 +90,15 @@ class acf_field_hotspots extends acf_field {
 				'something_else' => __('Something Else'),
 			)
 		));
-		
+
 		?>
 	</td>
 </tr>
 		<?php
-		
+
 	}
-	
-	
+
+
 	/*
 	*  create_field()
 	*
@@ -111,26 +110,26 @@ class acf_field_hotspots extends acf_field {
 	*  @since	3.6
 	*  @date	23/01/13
 	*/
-	
+
 	function create_field( $field )
 	{
 		// defaults?
 		/*
 		$field = array_merge($this->defaults, $field);
 		*/
-		
+
 		// perhaps use $field['preview_size'] to alter the markup?
-		
-		
+
+
 		// create Field HTML
 		?>
 		<div>
-			
+
 		</div>
 		<?php
 	}
-	
-	
+
+
 	/*
 	*  input_admin_enqueue_scripts()
 	*
@@ -146,25 +145,25 @@ class acf_field_hotspots extends acf_field {
 	function input_admin_enqueue_scripts()
 	{
 		// Note: This function can be removed if not used
-		
-		
+
+
 		// vars
 		$url = $this->settings['url'];
 		$version = $this->settings['version'];
-		
-		
+
+
 		// register & include JS
 		wp_register_script( 'acf-input-hotspots', "{$url}assets/js/input.js", array('acf-input'), $version );
 		wp_enqueue_script('acf-input-hotspots');
-		
-		
+
+
 		// register & include CSS
 		wp_register_style( 'acf-input-hotspots', "{$url}assets/css/input.css", array('acf-input'), $version );
 		wp_enqueue_style('acf-input-hotspots');
-		
+
 	}
-	
-	
+
+
 	/*
 	*  input_admin_head()
 	*
@@ -181,8 +180,8 @@ class acf_field_hotspots extends acf_field {
 	{
 		// Note: This function can be removed if not used
 	}
-	
-	
+
+
 	/*
 	*  field_group_admin_enqueue_scripts()
 	*
@@ -200,7 +199,7 @@ class acf_field_hotspots extends acf_field {
 		// Note: This function can be removed if not used
 	}
 
-	
+
 	/*
 	*  field_group_admin_head()
 	*
@@ -234,14 +233,14 @@ class acf_field_hotspots extends acf_field {
 	*
 	*  @return	$value - the value to be saved in the database
 	*/
-	
+
 	function load_value( $value, $post_id, $field )
 	{
 		// Note: This function can be removed if not used
 		return $value;
 	}
-	
-	
+
+
 	/*
 	*  update_value()
 	*
@@ -257,14 +256,14 @@ class acf_field_hotspots extends acf_field {
 	*
 	*  @return	$value - the modified value
 	*/
-	
+
 	function update_value( $value, $post_id, $field )
 	{
 		// Note: This function can be removed if not used
 		return $value;
 	}
-	
-	
+
+
 	/*
 	*  format_value()
 	*
@@ -280,22 +279,22 @@ class acf_field_hotspots extends acf_field {
 	*
 	*  @return	$value	- the modified value
 	*/
-	
+
 	function format_value( $value, $post_id, $field )
 	{
 		// defaults?
 		/*
 		$field = array_merge($this->defaults, $field);
 		*/
-		
+
 		// perhaps use $field['preview_size'] to alter the $value?
-		
-		
+
+
 		// Note: This function can be removed if not used
 		return $value;
 	}
-	
-	
+
+
 	/*
 	*  format_value_for_api()
 	*
@@ -311,22 +310,22 @@ class acf_field_hotspots extends acf_field {
 	*
 	*  @return	$value	- the modified value
 	*/
-	
+
 	function format_value_for_api( $value, $post_id, $field )
 	{
 		// defaults?
 		/*
 		$field = array_merge($this->defaults, $field);
 		*/
-		
+
 		// perhaps use $field['preview_size'] to alter the $value?
-		
-		
+
+
 		// Note: This function can be removed if not used
 		return $value;
 	}
-	
-	
+
+
 	/*
 	*  load_field()
 	*
@@ -340,14 +339,14 @@ class acf_field_hotspots extends acf_field {
 	*
 	*  @return	$field - the field array holding all the field options
 	*/
-	
+
 	function load_field( $field )
 	{
 		// Note: This function can be removed if not used
 		return $field;
 	}
-	
-	
+
+
 	/*
 	*  update_field()
 	*

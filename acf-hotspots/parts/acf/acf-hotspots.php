@@ -3,7 +3,6 @@
 // exit if accessed directly
 if( ! defined( 'ABSPATH' ) ) exit;
 
-
 // check if class already exists
 if( !class_exists('acf_plugin_hotspots') ) :
 
@@ -27,7 +26,7 @@ class acf_plugin_hotspots {
 		// vars
 		$this->settings = array(
 			'version'	=> '1.0.0',
-			'url'		=> plugin_dir_url( __FILE__ ),
+			'url'			=> plugin_dir_url( __FILE__ ),
 			'path'		=> plugin_dir_path( __FILE__ )
 		);
 
@@ -61,7 +60,6 @@ class acf_plugin_hotspots {
 
 		// support empty $version
 		if( !$version ) $version = 4;
-
 
 		// include
 		include_once('fields/acf-hotspots-v' . $version . '.php');
