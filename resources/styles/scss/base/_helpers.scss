@@ -1,0 +1,245 @@
+/**
+ *
+ *  Vetically centers content (flexbox alternative) within a container with
+ *  with a height and width. (does not work in something with height or width
+ *  of 0 and container needs to be positioned relative/absolute/fixed)
+ *
+ *  Usage:
+ *  <div class="centerer">
+ *  	<div>
+ *			Your content here
+ *		</div>
+ *  </div>
+ *
+ */
+.centerer{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+/**
+ *
+ *  Hides the elements based on resolution
+ *
+ */
+.hide-on{
+	&--{
+		@each $resolution, $size in $mq {
+			&#{$resolution} {
+				@include break($resolution) {
+					display: none;
+				}
+			}
+		}
+	}
+}
+
+/**
+ *
+ *  Shows the elements based on resolution
+ *
+ */
+.show-on{
+	&--{
+		@each $resolution, $size in $mq {
+			&#{$resolution} {
+				display: none;
+
+				@include break($resolution) {
+					display: inherit;
+				}
+			}
+		}
+	}
+}
+
+/**
+ *
+ *  Resets the UL elements
+ *
+ */
+.ul{
+	&--{
+		&reset{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		&inline{
+			li{
+				display: inline-block;
+			}
+		}
+	}
+}
+
+/**
+ *
+ *  Floats: right and left
+ *
+ */
+.fl{
+
+	&r{
+		float: right;
+	}
+
+	&l{
+		float: left;
+	}
+
+	&n{
+		float: none;
+	}
+}
+
+/**
+ *
+ *  Ratioed elements
+ *
+ */
+.ratio{
+	max-height: 100%;
+	overflow: hidden;
+	padding: 0;
+
+	> * {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	&:before{
+		content: '';
+		display: block;
+		position: relative;
+		width: 100%;
+		padding-bottom: 0;
+	}
+
+	@each $class, $percent in $ratios {
+		&--#{$class}{
+			@extend .ratio;
+
+			&:before{
+				padding-bottom: $percent;
+			}
+		}
+	}
+}
+
+/**
+ *
+ *  Padding & Margin helpers
+ *	Loops through margins map to create helpers like:
+ *	.padding--small and .margin--small
+ *
+ */
+@each $property in (padding,margin) {
+
+ 	.#{$property}{
+ 		#{$property}: $gutter;
+
+ 		&--{
+
+ 			@each $direction in (top,right,bottom,left) {
+ 				&#{$direction} {
+ 					#{$property}-#{$direction}: $gutter;
+
+ 					@each $gutter, $size in $gutters {
+ 						&-#{$gutter} {
+ 							#{$property}-#{$direction}: $size;
+ 						}
+ 					}
+
+ 					&-none{
+ 						#{$property}-#{$direction}: 0 !important;
+ 					}
+ 				}
+ 			}
+
+ 			@each $gutter, $size in $gutters {
+ 				&#{$gutter} {
+ 					#{$property}: $size;
+ 				}
+ 			}
+
+ 			&none{
+ 				#{$property}: 0 !important;
+ 			}
+ 		}
+ 	}
+}
+
+/**
+ *
+ *  Colors
+ *  Loops through color map to create helpers like .color--primary
+ *
+ */
+.color{
+	&--{
+		@each $color, $hex in $colors {
+			&#{$color} {
+				color: $hex;
+			}
+		}
+	}
+}
+
+/**
+ *
+ *	Backgrounds
+ *  Loops through color map to create helpers like .color--primary
+ *
+ */
+.background{
+	&--{
+		@each $color, $hex in $colors {
+			&#{$color} {
+				background-color: $hex;
+			}
+		}
+	}
+}
+
+/**
+ *
+ *  Text modifiers
+ *
+ */
+.text{
+	&--{
+		&bold{
+			font-weight: 800;
+		}
+
+		&center{
+			text-align: center;
+		}
+
+		&right{
+			text-align: right;
+		}
+	}
+}
+
+/**
+ *
+ *  Clearfixes elements to fix ghost margins and overflows
+ *
+ */
+.clearfix{
+	&:after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}

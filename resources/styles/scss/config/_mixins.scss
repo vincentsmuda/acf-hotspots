@@ -1,0 +1,67 @@
+/*
+
+	Get Font
+	
+	Usage:
+	@include font(n);
+
+	See:
+	$fonts in helpers/_variables.scss
+
+*/
+
+	@mixin font($i) {
+		@include renderMap(map-get($fonts, $i));
+	}
+
+/*
+
+	Breakpoints
+
+*/
+
+	@mixin break($p, $dir: -1) {
+	
+		$checker: false;
+
+		@if $dir == -1 {
+			$dir: max-width;
+		} @else {
+			$dir: min-width;
+		}
+	
+		@each $property, $value in $mq {
+
+			@if $p == $property {
+
+				@media ($dir: $value) { @content; }
+
+				$checker: true;
+
+			}
+		}
+
+		@if $checker == false {
+
+			@media ($dir: $p)  { @content; }
+
+		}
+	}
+
+/* 
+
+	Render Map
+
+	Usage:
+	@include renderMap($map);
+
+	Where map is a map type variable 
+	(ex $something: (value1: x, value2: y);)
+
+*/
+
+	@mixin renderMap($map) {
+		@each $property, $value in $map {
+			#{$property}: $value;
+		}
+	}

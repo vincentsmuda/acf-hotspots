@@ -1,0 +1,54 @@
+.container{
+	@extend .clearfix;
+	overflow: auto;
+	box-sizing: border-box;
+	position: relative;
+	max-width: $container-large;
+	width: 100%;
+	margin: 0 auto;
+	padding: 0 $gutter-small;
+
+	&--{
+		@each $container, $container-width in $containers {
+			&#{$container} {
+				max-width: $container-width;
+			}
+		}
+	}
+}
+
+@each $query_name, $query_size in $mq {
+	@include break($query_name,1) {
+		%block{
+			box-sizing: border-box;
+			padding: $gutter-small;
+			display: block;
+			position: relative;
+			float: left;
+		}
+
+		@each $size in $layout {
+			$size_class: '';
+			$query_type: '';
+
+			@if $size > 66 and $size < 67 {
+				$size_class: 'two-third';
+			} @else if $size > 33 and $size < 34 {
+				$size_class: 'one-third';
+			} @else {
+				$size_class: $size;
+			}
+
+			@if $query_name == '' {
+				$query_type: '';
+			} @else {
+				$query_type: '--' + $query_name;
+			}
+
+			.block__#{$size_class + $query_type} {
+				@extend %block;
+				width: 1% * $size;
+			}
+		}
+	}
+}

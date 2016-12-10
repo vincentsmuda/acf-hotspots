@@ -1,0 +1,26 @@
+{
+	"ingredients": [
+		{
+			"type": "html",
+			"output_type": "html",
+			"components_as_dirs": true,
+			"path": "/public/parts/"
+		},
+		{
+			"type": "scss",
+			"components_as_dirs": true,
+			"path": "/resources/styles/scss/",
+			"prefix": "_",
+			"import": {
+				"name": "style.scss",
+				"path": "/resources/styles/scss/"
+			}
+		},
+		{
+			"type": "js",
+			"components_as_dirs": true,
+			"path": "/resources/scripts/js/",
+			"prefix": "_"
+		}
+	]
+}
