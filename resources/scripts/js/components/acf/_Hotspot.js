@@ -22,8 +22,10 @@ var HotspotInput = (function($){
       this.point          = this.create_point(attributes.x,attributes.y);
 
       if(!attributes.exists) {
-        this.inputs       = this.create_inputs(attributes.x,attributes.y);
+        this.create_inputs(attributes.x,attributes.y);
       }
+
+      this.point_events();
     }
 
 
@@ -32,9 +34,9 @@ var HotspotInput = (function($){
      */
     create_inputs (x,y) {
       let clone = this.context.spot_clone.cloneNode(true),
-          clone_fields = clone.getElementsByClassName('acf-hotspot__input'),
+          clone_fields = getClass('acf-hotspot__input', clone),
           clone_number = this.i,
-          clone_title = clone.getElementsByClassName('acf-hotspot__label')[0];
+          clone_title = getClass('acf-hotspot__label', clone)[0];
 
       for (var i = 0, l = clone_fields.length; i < l; i++) {
         let field_name = clone_fields[i].getAttribute('data-name').replace('!!N!!', clone_number);
@@ -43,12 +45,44 @@ var HotspotInput = (function($){
 
       clone_title.innerHTML = clone_title.innerHTML.replace(/!!N!!/g, clone_number+1);
 
-      clone.getElementsByClassName(class_base + '__input--x')[0].value = x;
-      clone.getElementsByClassName(class_base + '__input--y')[0].value = y;
+      getClass(class_base + '__input--x', clone)[0].value = x;
+      getClass(class_base + '__input--y', clone)[0].value = y;
 
       this.context.spot_clone_original.parentNode.appendChild(clone);
 
-      return clone;
+      return get_inputs_object(clone);
+    }
+
+
+    /**
+     *  Handles repositioning of point and updating of its values
+     */
+    reposition (i) {
+      let inputs = this.inputs.inputs;
+      this.i = i;
+      this.point.parentNode.appendChild(this.point);
+      for (var j = 0, l = inputs.length; j < l; j++) {
+        inputs[j].setAttribute(
+          'name',
+          inputs[j].getAttribute('name').replace(
+            /points]\[\d+\]\[/,
+            'points][' + i + ']['
+          )
+        );
+      }
+    }
+
+
+    /**
+     *  Get inputs object
+     */
+    get_inputs_object (wrapper) {
+      this.inputs = {
+        wrapper: wrapper,
+        inputs: getClass('acf-hotspot__input', wrapper),
+        x: getClass(class_base + '__input--x', wrapper)[0],
+        y: getClass(class_base + '__input--y', wrapper)[0]
+      }
     }
 
 
@@ -57,12 +91,10 @@ var HotspotInput = (function($){
      */
     create_point (x,y) {
 
-      let point_element = document.createElement('div'),
-          point_number = document.createTextNode(this.i+1);
+      let point_element = document.createElement('div');
       point_element.classList.add(this.class_point);
       point_element.style.left = (x * 100) + '%';
       point_element.style.top = (y * 100) + '%';
-      point_element.appendChild(point_number);
 
       this.context.main_image.parentNode.insertBefore(
         point_element,
@@ -71,6 +103,39 @@ var HotspotInput = (function($){
 
       return point_element;
 
+    }
+
+
+    /**
+     *  Updates the position values in the inputs
+     */
+    update_position(x,y) {
+      this.x = x;
+      this.y = y;
+      this.inputs.x.value = x;
+      this.inputs.y.value = y;
+      this.point.style.left = x*100 + '%';
+      this.point.style.top = y*100 + '%';
+    }
+
+
+    /**
+     *  Point Events
+     */
+    point_events () {
+      let self = this,
+          main_image = this.context.main_image;
+      $( this.point ).draggable({
+        containment: 'parent',
+        scroll: false,
+        // start: function() {},
+        // drag: function() {},
+        stop: function(e) {
+          let x = self.point.offsetLeft / main_image.offsetWidth,
+              y = self.point.offsetTop / main_image.offsetHeight;
+          self.update_position(x,y);
+        }
+      });
     }
 
   }
@@ -84,7 +149,7 @@ var HotspotInput = (function($){
       this.el 					  = $el;
       this.source_image   = $('.' + class_base + '__upload .acf-image-uploader .view img', $el);
       this.img_src        = '';
-      this.main_image     = this.el[0].getElementsByClassName( class_base + '__image')[0];
+      this.main_image     = getClass( class_base + '__image', this.el[0])[0];
       this.points         = [];
       this.spot_clone     = this.generate_spot_clone();
       this.init();
@@ -95,16 +160,18 @@ var HotspotInput = (function($){
      *  Adds existing points to item
      */
     add_exisiting_points() {
-      let existing_points = document.getElementsByClassName(class_base + '__point-fields');
-      for (var i = 0, l = existing_points.length; i < l; i++) {
-        let x = existing_points[i].getElementsByClassName(class_base + '__input--x')[0].value,
-            y = existing_points[i].getElementsByClassName(class_base + '__input--y')[0].value;
-        this.points.push(new HotspotPoint({
-          x: x,
-          y: y,
-          context: this,
-          exists: true
-        }));
+      let existing_points = getClass(class_base + '__point-fields', this.el[0]);
+      for (let i = 0, l = existing_points.length; i < l; i++) {
+        let x = getClass(class_base + '__input--x', existing_points[i])[0].value,
+            y = getClass(class_base + '__input--y', existing_points[i])[0].value,
+            point = new HotspotPoint({
+              x: x,
+              y: y,
+              context: this,
+              exists: true
+            });
+        point.get_inputs_object(existing_points[i]);
+        this.points.push(point);
       }
     }
 
@@ -113,7 +180,7 @@ var HotspotInput = (function($){
      *  Generates spot fields clone
      */
     generate_spot_clone() {
-      let original = this.el[0].getElementsByClassName(class_base + '__clone-base')[0],
+      let original = getClass(class_base + '__clone-base', this.el[0])[0],
           clone = original.cloneNode(true);
       this.spot_clone_original = original;
       clone.classList.remove(class_base + '__clone-base');
@@ -179,6 +246,38 @@ var HotspotInput = (function($){
 
 
     /**
+     *  Sorts all references to the given point
+     */
+    sort_points (from, to) {
+      this.points.splice(to, 0, this.points.splice(from, 1)[0]);
+      for (var i = 0, l = this.points.length; i < l; i++) {
+        this.points[i].reposition(i);
+      }
+    }
+
+    /**
+     *  Reorders the point information
+     */
+    sortabe() {
+      let self = this,
+          sorted_item = -1;
+      $( '.' + class_base + '__information' ).sortable({
+        // revert: true,
+        handle: '.' + class_base + '__label',
+        start: function( event, ui ) {
+          sorted_item = ui.item.index();
+        },
+        beforeStop: function( event, ui ) {
+          if(sorted_item !== ui.item.index()) {
+            self.sort_points(sorted_item-1, ui.item.index()-1);
+          }
+          sorted_item = -1;
+        }
+      });
+    }
+
+
+    /**
      *  Triggers necessary watchers and events
      */
 
@@ -187,10 +286,15 @@ var HotspotInput = (function($){
       this.change_hotspot_image();
       this.listen_for_user_clicks();
       this.add_exisiting_points();
+      this.sortabe();
     }
 
   }
 
-  // return Hotspot;
+  // Set helper functions:``
+  function getClass(string, context) {
+    if(context === undefined) context = document;
+    return context.getElementsByClassName(string);
+  }
 
 })(jQuery);

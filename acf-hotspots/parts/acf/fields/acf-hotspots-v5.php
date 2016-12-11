@@ -234,7 +234,7 @@ class acf_field_hotspots extends acf_field {
 				$point_num = $first ? '!!N!!' : $point_index-1;
 				echo '
 					<div class="acf-hotspot__' . ($first ? 'clone-base' : 'point-fields') . '">
-						<strong class="acf-hotspot__label">#' . ($first ? $point_num : $point_num + 1)  . '</strong>
+						<strong class="acf-hotspot__label"></strong>
 						<input type="hidden" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][x]" ' . (empty($point['x']) ? '' : 'value="' . $point['x'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--x" />
 						<input type="hidden" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][y]" ' . (empty($point['y']) ? '' : 'value="' . $point['y'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--y" />
 						<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][title]" ' . (empty($point['title']) ? '' : 'value="' . $point['title'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--title" />

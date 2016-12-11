@@ -10,6 +10,7 @@
 
 		&container{
 			position: relative;
+			counter-reset: point;
 			float: left;
 		}
 
@@ -25,19 +26,41 @@
 			position: absolute;
 			top: 0;
 			left: 0;
-			border-radius: 50%;
-			width: 20px;
-			height: 20px;
-			text-align: center;
-			color: $color-white;
-			line-height: 20px;
 			z-index: 10;
-			background: rgba(0,0,0,0.25);
-			transform: translate(-50%,-50%);
+
+			&:before{
+				counter-increment: point;
+    		content: counter(point);
+				border-radius: 50%;
+				position: relative;
+				display: block;
+				width: 20px;
+				height: 20px;
+				text-align: center;
+				color: $color-white;
+				line-height: 20px;
+				z-index: 10;
+				background: rgba(0,0,0,0.25);
+			}
 		}
 
 		&clone-base{
 			display: none;
+		}
+
+		&information{
+			clear: both;
+			counter-reset: field_number;
+		}
+
+		&point-fields{
+			counter-increment: field_number;
+		}
+
+		&label{
+			&:before{
+				content: '#'counter(field_number);
+			}
 		}
 	}
 }
