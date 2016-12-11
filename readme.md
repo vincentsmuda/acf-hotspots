@@ -19,21 +19,21 @@ Array (
     [1] => Array(
       [x] => 0.19047619047619047
       [y] => 0.1288135593220339
-      [title] =>  title
-      [description] => Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      [title] =>  'title'
+      [description] => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
       [link] => Array (
-        [url] => http://some.url
-        [text] => link text
+        [url] => 'http://some.url'
+        [text] => 'link text'
       )
     ),
     [2] => Array(
       [x] => 0.5542857142857143
       [y] => 0.24067796610169492
-      [title] => Another Title
-      [description] => Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      [title] => 'Another Title'
+      [description] => 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
       [link] => Array(
-        [url] => http://some.someplace
-        [text] => buy now
+        [url] => 'http://some.someplace'
+        [text] => 'buy now'
       )
     )
   )
