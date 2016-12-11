@@ -398,20 +398,21 @@ var HotspotInput = (function($){
      *  Reorders the point information
      */
     sortabe() {
-      let self = this,
-          sorted_item = -1;
+      let sorted_item = -1;
       this.accordion
         .accordion({
           collapsible: true,
           header: '.' + class_base + '__label',
-          beforeActivate: function ( event, ui ) {
+          beforeActivate: ( event, ui ) => {
+            
             if(ui.newHeader[0] === undefined) return;
-            let panel = self.points[ui.newHeader.parent().index()-1];
+
+            let panel = this.points[ui.newHeader.parent().index()-1];
 
             // TODO: Really need to find a fix for this...
             // sometimes the accordion doesn't expand to the
             // height of its contents
-            self.accordion.accordion( "refresh" );
+            // this.accordion.accordion( "refresh" );
 
             if(
               !panel.tinymce_active &&
@@ -424,8 +425,8 @@ var HotspotInput = (function($){
               10
             );
           },
-          create: function () {
-            self.accordion_ready = true;
+          create: () => {
+            this.accordion_ready = true;
           }
         })
         .sortable({
@@ -434,9 +435,9 @@ var HotspotInput = (function($){
           start: function( event, ui ) {
             sorted_item = ui.item.index();
           },
-          beforeStop: function( event, ui ) {
+          beforeStop: ( event, ui ) => {
             if(sorted_item !== ui.item.index()) {
-              self.sort_points(sorted_item-1, ui.item.index()-1);
+              this.sort_points(sorted_item-1, ui.item.index()-1);
             }
             sorted_item = -1;
           }
