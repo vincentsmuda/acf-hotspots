@@ -189,14 +189,15 @@ class acf_field_hotspots extends acf_field {
 
 	function render_field( $field ) {
 
-		echo '<div class="acf-field acf-field-image">';
+		/**
+		 *	Render the image field
+		 */
 
-			/**
-			 *	Render the image field
-			 */
+		echo '<div class="acf-field acf-field-image acf-hotspot__upload">';
+
 			$this->image->render_field([
 		    'name' => $field['name'] . '[image]',
-				'preview_size' => 'large',
+				'preview_size' => 'thumbnail',
 				'library' => 'all',
 				'mime_types'	=> '',
 				'value' => (empty($field['value']['image']) ? '' : $field['value']['image'])
@@ -204,24 +205,60 @@ class acf_field_hotspots extends acf_field {
 
 		echo '</div>';
 
+
+		/**
+		 *	Render the hotspot image
+		 */
+
+		echo '
+			<div class="acf-hotspot__container">
+				<img class="acf-hotspot__image">
+			</div>
+		';
+
+
+		/**
+		 *	Render the hotspot information area
+		 */
+
+		echo '<div class="acf-hotspot__information">';
+
+			if(empty($field['value']['points']))
+				$field['value']['points'] = [[]];
+			else
+				array_unshift($field['value']['points'], []);
+
+			foreach ($field['value']['points'] as $point_index => $point) {
+				$first = empty($point_index);
+				$name_attribute = ($first ? 'data-' : '') . 'name';
+				$point_num = $first ? '!!N!!' : $point_index-1;
+				echo '
+					<div class="acf-hotspot__' . ($first ? 'clone-base' : 'point-fields') . '">
+						<strong class="acf-hotspot__label">#' . ($first ? $point_num : $point_num + 1)  . '</strong>
+						<input type="hidden" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][x]" ' . (empty($point['x']) ? '' : 'value="' . $point['x'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--x" />
+						<input type="hidden" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][y]" ' . (empty($point['y']) ? '' : 'value="' . $point['y'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--y" />
+						<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][title]" ' . (empty($point['title']) ? '' : 'value="' . $point['title'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--title" />
+						<textarea ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][description]" class="acf-hotspot__input acf-hotspot__input--description">'
+							. (empty($point['description']) ? '' : $point['description']) .
+						'</textarea>
+					</div>
+				';
+			}
+
+		echo '</div>';
+
+
 		/*
 		*  Review the data of $field.
 		*  This will show what data is available
 		*/
 
-		echo '<pre>';
-			print_r( $field );
-		echo '</pre>';
+		if(isset($_GET['debug'])) {
+			echo '<div style="clear: both;"><pre>';
+				print_r( $field );
+			echo '</pre></div>';
+		}
 
-
-
-		/*
-		*  Create a simple text input using the 'font_size' setting.
-		*/
-
-		?>
-		<input type="text" name="<?php echo esc_attr($field['name']) ?>[title]" value="<?php echo esc_attr($field['value']['title']) ?>" />
-		<?php
 
 	}
 

@@ -12,7 +12,7 @@
 			"path": "/resources/styles/scss/",
 			"prefix": "_",
 			"import": {
-				"name": "style.scss",
+				"name": "acf-hotspots-render.scss",
 				"path": "/resources/styles/scss/"
 			}
 		},

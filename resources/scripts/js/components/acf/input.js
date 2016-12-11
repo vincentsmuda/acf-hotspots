@@ -1,12 +1,10 @@
 (function($){
 
-
-	function initialize_field( $el ) {
-
-		//$el.doStuff();
-
-	}
-
+	/**
+	 *
+	 *	ACF INIT STUFF
+	 *
+	 */
 
 	if( typeof acf.add_action !== 'undefined' ) {
 
@@ -27,11 +25,8 @@
 		acf.add_action('ready append', function( $el ){
 
 			// search $el for fields of type 'hotspots'
-			acf.get_fields({ type : 'hotspots'}, $el).each(function(){
-
-				initialize_field( $(this) );
-
-			});
+			acf.get_fields({ type : 'hotspots'}, $el)
+				.each(function() { new HotspotInput( $(this) ) });
 
 		});
 
@@ -56,11 +51,8 @@
 
 		$(document).on('acf/setup_fields', function(e, postbox){
 
-			$(postbox).find('.field[data-field_type="hotspots"]').each(function(){
-
-				initialize_field( $(this) );
-
-			});
+			$(postbox).find('.field[data-field_type="hotspots"]')
+				.each(function() { new HotspotInput( $(this) ) });
 
 		});
 
