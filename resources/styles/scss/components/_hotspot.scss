@@ -79,6 +79,10 @@
 			.mce-container {
 				border: 1px solid $color-lightgrey;
 			}
+
+			&--description {
+				height: 300px;
+			}
 		}
 
 		&label{

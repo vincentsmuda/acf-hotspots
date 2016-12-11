@@ -214,7 +214,7 @@ class acf_field_hotspots extends acf_field {
 
 			foreach ($field['value']['points'] as $point_index => $point) {
 				$first = empty($point_index);
-				$name_attribute = ($first ? 'data-' : '') . 'name';
+				$name_attribute = ($first ? '' : '') . 'name';
 				$point_num = $first ? '!!N!!' : $point_index-1;
 				echo '
 					<div class="acf-hotspot__' . ($first ? 'clone-base' : 'point-fields') . '">

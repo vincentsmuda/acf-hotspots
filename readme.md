@@ -6,7 +6,7 @@ An extension for the Advanced Custom Fields plugin for Wordpress. If you would l
 
 ##TODO
 - Save image sizes to field
-- Add tinymce to textarea per point
+- Add image insertion support for tinymce
 - x-browser
 - General QA
 

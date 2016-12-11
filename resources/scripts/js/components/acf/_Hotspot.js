@@ -57,6 +57,35 @@ var HotspotInput = (function($){
 
 
     /**
+     *  Has a tinymce
+     */
+    has_a_tinymce () {
+      if(
+        !this.tinymce_active &&
+        this.inputs.wrapper.getElementsByClassName('mce-tinymce').length > 0
+      ) {
+        this.tinymce_active = true;
+        this.refresh_accordion();
+        return true;
+      }
+      return false;
+    }
+
+
+    /**
+     *  Refreshes the accordion
+     */
+    refresh_accordion () {
+      if(this.context.accordion_ready) {
+        setTimeout(
+          () => this.context.accordion.accordion( "refresh" ),
+          10
+        );
+      }
+    }
+
+
+    /**
      *  Handles repositioning of point and updating of its values
      */
     reposition (i) {
@@ -100,9 +129,10 @@ var HotspotInput = (function($){
         selector: '.' + this.context.id + ' .' + class_base + '__point-fields:nth-child(' + (this.i + 2) + ') .' + class_base + '__input--description',
         menubar: false,
         statusbar: false,
+        height: 300,
         setup: function (ed) {
           ed.on('init', function(args) {
-            $( '.acf-hotspot__information', this.el ).accordion( "refresh" );
+            self.refresh_accordion();
             setTimeout(
               () => self.is_loading(false),
               10
@@ -226,13 +256,15 @@ var HotspotInput = (function($){
      *  What we need to run the class
      */
     constructor ($el) {
-      this.el 					  = $el;
-      this.id             = this.get_id();
-      this.source_image   = $('.' + class_base + '__upload .acf-image-uploader .view img', $el);
-      this.img_src        = '';
-      this.main_image     = getClass( class_base + '__image', this.el[0])[0];
-      this.points         = [];
-      this.spot_clone     = this.generate_spot_clone();
+      this.el               = $el;
+      this.id               = this.get_id();
+      this.source_image     = $('.' + class_base + '__upload .acf-image-uploader .view img', $el);
+      this.img_src          = '';
+      this.main_image       = getClass( class_base + '__image', this.el[0])[0];
+      this.points           = [];
+      this.spot_clone       = this.generate_spot_clone();
+      this.accordion_ready  = false;
+      this.accordion        = $( '.' + class_base + '__information', this.el );
       this.init();
     }
 
@@ -274,7 +306,18 @@ var HotspotInput = (function($){
      */
     generate_spot_clone() {
       let original = getClass(class_base + '__clone-base', this.el[0])[0],
-          clone = original.cloneNode(true);
+          inputs = getClass(class_base + '__input', original),
+          clone = null;
+
+      for (var i = 0, l = inputs.length; i < l; i++) {
+        inputs[i].setAttribute(
+          'data-name',
+          inputs[i].getAttribute('name')
+        );
+        inputs[i].removeAttribute('name');
+      }
+
+      clone = original.cloneNode(true);
       this.spot_clone_original = original;
       clone.classList.remove(class_base + '__clone-base');
       clone.classList.add(class_base + '__point-fields');
@@ -333,7 +376,9 @@ var HotspotInput = (function($){
             context: this
           });
 
-      $( '.' + class_base + '__information', this.el ).accordion( "refresh" );
+      if (this.accordion_ready) {
+        this.accordion.accordion( "refresh" );
+      }
 
       return this.points.push(point);
 
@@ -355,19 +400,32 @@ var HotspotInput = (function($){
     sortabe() {
       let self = this,
           sorted_item = -1;
-      $( '.' + class_base + '__information', this.el )
+      this.accordion
         .accordion({
           collapsible: true,
           header: '.' + class_base + '__label',
-          beforeActivate: function( event, ui ) {
+          beforeActivate: function ( event, ui ) {
             if(ui.newHeader[0] === undefined) return;
-            if(!self.points[ui.newHeader.parent().index()-1].tinymce_active){
-              self.points[ui.newHeader.parent().index()-1].is_loading(true);
+            let panel = self.points[ui.newHeader.parent().index()-1];
+
+            // TODO: Really need to find a fix for this...
+            // sometimes the accordion doesn't expand to the
+            // height of its contents
+            self.accordion.accordion( "refresh" );
+
+            if(
+              !panel.tinymce_active &&
+              !panel.has_a_tinymce()
+            ){
+              panel.is_loading(true);
             }
             setTimeout(
-              () => self.points[ui.newHeader.parent().index()-1].init_tinymce(),
+              () => panel.init_tinymce(),
               10
             );
+          },
+          create: function () {
+            self.accordion_ready = true;
           }
         })
         .sortable({
