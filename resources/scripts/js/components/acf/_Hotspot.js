@@ -82,7 +82,9 @@ var HotspotInput = (function($){
         inputs: getClass(class_base + '__input', wrapper),
         x: getClass(class_base + '__input--x', wrapper)[0],
         y: getClass(class_base + '__input--y', wrapper)[0]
-      }
+      };
+      this.handle_remove();
+      return this.inputs;
     }
 
 
@@ -119,9 +121,42 @@ var HotspotInput = (function($){
 
 
     /**
-     *  Point Events
+     *  handles the listener for the remove button
      */
-    point_events () {
+    handle_remove() {
+      if(this.inputs.wrapper === undefined) return;
+      let remove_button = getClass('acf-hotspot__delete',this.inputs.wrapper)[0];
+      remove_button.addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault()
+          this.remove()
+        }
+      )
+    }
+
+
+    /**
+     *  Removes this point
+     */
+    remove() {
+      if(confirm('Are you sure you would like to remove point #' + (this.i+1) + '? (this change will only persist if you save/update this post)')) {
+        let points = this.context.points;
+        points.splice(this.i, 1);
+        for (let i = 0, l = points.length; i < l; i++) {
+          points[i].reposition(i);
+        }
+        this.point.parentNode.removeChild(this.point);
+        this.inputs.wrapper.parentNode.removeChild(this.inputs.wrapper);
+        // TODO: Delete this instance
+      }
+    }
+
+
+    /**
+     *  Makes this point draggable on the image
+     */
+    make_draggable () {
       let self = this,
           main_image = this.context.main_image;
       $( this.point ).draggable({
@@ -135,6 +170,15 @@ var HotspotInput = (function($){
           self.update_position(x,y);
         }
       });
+    }
+
+
+    /**
+     *  Point Events
+     */
+    point_events () {
+      // this.handle_remove();
+      this.make_draggable();
     }
 
   }
