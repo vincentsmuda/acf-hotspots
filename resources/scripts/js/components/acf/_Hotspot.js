@@ -34,9 +34,9 @@ var HotspotInput = (function($){
      */
     create_inputs (x,y) {
       let clone = this.context.spot_clone.cloneNode(true),
-          clone_fields = getClass('acf-hotspot__input', clone),
+          clone_fields = getClass(class_base + '__input', clone),
           clone_number = this.i,
-          clone_title = getClass('acf-hotspot__label', clone)[0];
+          clone_title = getClass(class_base + '__label', clone)[0];
 
       for (var i = 0, l = clone_fields.length; i < l; i++) {
         let field_name = clone_fields[i].getAttribute('data-name').replace('!!N!!', clone_number);
@@ -50,7 +50,7 @@ var HotspotInput = (function($){
 
       this.context.spot_clone_original.parentNode.appendChild(clone);
 
-      return get_inputs_object(clone);
+      return this.get_inputs_object(clone);
     }
 
 
@@ -79,7 +79,7 @@ var HotspotInput = (function($){
     get_inputs_object (wrapper) {
       this.inputs = {
         wrapper: wrapper,
-        inputs: getClass('acf-hotspot__input', wrapper),
+        inputs: getClass(class_base + '__input', wrapper),
         x: getClass(class_base + '__input--x', wrapper)[0],
         y: getClass(class_base + '__input--y', wrapper)[0]
       }
@@ -96,9 +96,8 @@ var HotspotInput = (function($){
       point_element.style.left = (x * 100) + '%';
       point_element.style.top = (y * 100) + '%';
 
-      this.context.main_image.parentNode.insertBefore(
-        point_element,
-        this.context.main_image
+      this.context.main_image.parentNode.appendChild(
+        point_element
       );
 
       return point_element;
@@ -261,7 +260,7 @@ var HotspotInput = (function($){
     sortabe() {
       let self = this,
           sorted_item = -1;
-      $( '.' + class_base + '__information' ).sortable({
+      $( '.' + class_base + '__information', this.el ).sortable({
         // revert: true,
         handle: '.' + class_base + '__label',
         start: function( event, ui ) {

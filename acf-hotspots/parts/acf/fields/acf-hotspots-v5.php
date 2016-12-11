@@ -241,6 +241,8 @@ class acf_field_hotspots extends acf_field {
 						<textarea ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][description]" class="acf-hotspot__input acf-hotspot__input--description">'
 							. (empty($point['description']) ? '' : $point['description']) .
 						'</textarea>
+						<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][link][url]" ' . (empty($point['link']['url']) ? '' : 'value="' . $point['link']['url'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--link-url" />
+						<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][link][text]" ' . (empty($point['link']['text']) ? '' : 'value="' . $point['link']['text'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--link-text" />
 					</div>
 				';
 			}
