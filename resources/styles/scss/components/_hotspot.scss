@@ -64,21 +64,46 @@
 			background: $color-white;
 			border: 1px solid $color-lightgrey;
 			margin-bottom: -1px;
+			transition: opacity $transition-length;
+
+			&--loading{
+				opacity: 0.1 !important;
+				transition: opacity $transition-length;
+			}
 		}
 
 		&field{
 			padding: 10px 12px 15px;
 			border-top: $color-lightgrey solid 1px;
+
+			.mce-container {
+				border: 1px solid $color-lightgrey;
+			}
 		}
 
 		&label{
+			cursor: move;
 			padding: $gutter;
 			display: block;
 			background: #fdfdfd;
+			position: relative;
 
 			&:before{
 				content: 'Point: #' counter(field_number);
 			}
+
+			&.ui-accordion-header-active{
+				.acf-hotspot__toggle{
+					transform: translateY(-50%) rotate(0deg);
+				}
+			}
+		}
+
+		&toggle{
+			position: absolute;
+			right: $gutter;
+			top: 50%;
+			transform: translate(0%,-50%) rotate(180deg);
 		}
 	}
 }

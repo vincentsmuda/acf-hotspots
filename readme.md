@@ -7,7 +7,6 @@ An extension for the Advanced Custom Fields plugin for Wordpress. If you would l
 ##TODO
 - Save image sizes to field
 - Add tinymce to textarea per point
-- Make point textfields prettier
 - x-browser
 - General QA
 

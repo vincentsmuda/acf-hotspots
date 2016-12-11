@@ -20,12 +20,14 @@ var HotspotInput = (function($){
       this.context 				= attributes.context;
       this.i              = this.context.points.length;
       this.point          = this.create_point(attributes.x,attributes.y);
+      this.tinymce_active = false;
 
       if(!attributes.exists) {
         this.create_inputs(attributes.x,attributes.y);
       }
 
       this.point_events();
+
     }
 
 
@@ -85,6 +87,43 @@ var HotspotInput = (function($){
       };
       this.handle_remove();
       return this.inputs;
+    }
+
+
+    /**
+     *  Initiates Tinymce
+     */
+    init_tinymce () {
+      if(this.tinymce_active) return;
+      let self = this;
+      tinymce.init({
+        selector: '.' + this.context.id + ' .' + class_base + '__point-fields:nth-child(' + (this.i + 2) + ') .' + class_base + '__input--description',
+        menubar: false,
+        statusbar: false,
+        setup: function (ed) {
+          ed.on('init', function(args) {
+            $( '.acf-hotspot__information', this.el ).accordion( "refresh" );
+            setTimeout(
+              () => self.is_loading(false),
+              10
+            )
+          });
+        }
+      });
+      this.tinymce_active = true;
+    }
+
+
+    /**
+     *  Puts the tab into a loading state
+     */
+    is_loading (loading) {
+      let wrapper = this.inputs.wrapper;
+      if(loading){
+        wrapper.classList.add( class_base + '__point-fields--loading' );
+      }else{
+        wrapper.classList.remove( class_base + '__point-fields--loading' );
+      }
     }
 
 
@@ -162,8 +201,6 @@ var HotspotInput = (function($){
       $( this.point ).draggable({
         containment: 'parent',
         scroll: false,
-        // start: function() {},
-        // drag: function() {},
         stop: function(e) {
           let x = self.point.offsetLeft / main_image.offsetWidth,
               y = self.point.offsetTop / main_image.offsetHeight;
@@ -190,12 +227,25 @@ var HotspotInput = (function($){
      */
     constructor ($el) {
       this.el 					  = $el;
+      this.id             = this.get_id();
       this.source_image   = $('.' + class_base + '__upload .acf-image-uploader .view img', $el);
       this.img_src        = '';
       this.main_image     = getClass( class_base + '__image', this.el[0])[0];
       this.points         = [];
       this.spot_clone     = this.generate_spot_clone();
       this.init();
+    }
+
+
+    /**
+     *  Gets the id of the hotspot area
+     */
+    get_id () {
+      let classes = this.el[0].classList;
+      for (let i = 0, l = classes.length; i < l; i++) {
+        if(!classes[i].match(/acf-field-\d+/g)) continue;
+        return classes[i];
+      }
     }
 
 
@@ -308,7 +358,17 @@ var HotspotInput = (function($){
       $( '.' + class_base + '__information', this.el )
         .accordion({
           collapsible: true,
-          header: '.' + class_base + '__label'
+          header: '.' + class_base + '__label',
+          beforeActivate: function( event, ui ) {
+            if(ui.newHeader[0] === undefined) return;
+            if(!self.points[ui.newHeader.parent().index()-1].tinymce_active){
+              self.points[ui.newHeader.parent().index()-1].is_loading(true);
+            }
+            setTimeout(
+              () => self.points[ui.newHeader.parent().index()-1].init_tinymce(),
+              10
+            );
+          }
         })
         .sortable({
           // revert: true,

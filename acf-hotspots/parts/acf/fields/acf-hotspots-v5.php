@@ -205,7 +205,7 @@ class acf_field_hotspots extends acf_field {
 		 *	Render the hotspot information area
 		 */
 
-		echo '<div class="acf-hotspot__information">';
+		echo '<div id="acf-hotspot__information--' . $field['key'] . '" class="acf-hotspot__information">';
 
 			if(empty($field['value']['points']))
 				$field['value']['points'] = [[]];
@@ -218,7 +218,9 @@ class acf_field_hotspots extends acf_field {
 				$point_num = $first ? '!!N!!' : $point_index-1;
 				echo '
 					<div class="acf-hotspot__' . ($first ? 'clone-base' : 'point-fields') . '">
-						<strong class="acf-hotspot__label"></strong>
+						<strong class="acf-hotspot__label">
+							<span class="acf-hotspot__toggle toggle-indicator" aria-hidden="true"></span>
+						</strong>
 						<div>
 							<input type="hidden" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][x]" ' . (empty($point['x']) ? '' : 'value="' . $point['x'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--x" />
 							<input type="hidden" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][y]" ' . (empty($point['y']) ? '' : 'value="' . $point['y'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--y" />
