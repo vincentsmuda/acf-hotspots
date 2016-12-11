@@ -60,23 +60,10 @@
 		&point-fields{
 			counter-increment: field_number;
 			box-sizing: border-box;
-			// padding: $gutter;
-			width: 33.33333333%;
+			width: 100%;
+			background: $color-white;
 			border: 1px solid $color-lightgrey;
-			border-left-width: 0px;
-			border-top-width: 0px;
-
-			&:nth-child(2),
-			// &:nth-child(5),
-			&:nth-child(3n+5){ // 4th + 1 (offset)
-				border-left-width: 1px;
-			}
-
-			&:nth-child(2),
-			&:nth-child(3),
-			&:nth-child(4){
-				border-top-width: 1px;
-			}
+			margin-bottom: -1px;
 		}
 
 		&field{
@@ -87,6 +74,7 @@
 		&label{
 			padding: $gutter;
 			display: block;
+			background: #fdfdfd;
 
 			&:before{
 				content: 'Point: #' counter(field_number);

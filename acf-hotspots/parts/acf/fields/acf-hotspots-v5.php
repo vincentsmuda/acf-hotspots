@@ -219,31 +219,33 @@ class acf_field_hotspots extends acf_field {
 				echo '
 					<div class="acf-hotspot__' . ($first ? 'clone-base' : 'point-fields') . '">
 						<strong class="acf-hotspot__label"></strong>
-						<input type="hidden" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][x]" ' . (empty($point['x']) ? '' : 'value="' . $point['x'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--x" />
-						<input type="hidden" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][y]" ' . (empty($point['y']) ? '' : 'value="' . $point['y'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--y" />
-						<div class="acf-input"><div class="acf-input-wrap">
-							<div class="acf-hotspot__field">
-								<div class="acf-label"><label>Title</label></div>
-								<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][title]" ' . (empty($point['title']) ? '' : 'value="' . $point['title'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--title" />
-							</div>
-							<div class="acf-hotspot__field">
-								<div class="acf-label"><label>Description</label></div>
-								<textarea ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][description]" class="acf-hotspot__input acf-hotspot__input--description">'
-									. (empty($point['description']) ? '' : $point['description']) .
-								'</textarea>
-							</div>
-							<div class="acf-hotspot__field">
-								<div class="acf-label"><label>Button Link</label></div>
-								<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][link][url]" ' . (empty($point['link']['url']) ? '' : 'value="' . $point['link']['url'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--link-url" />
-							</div>
-							<div class="acf-hotspot__field">
-								<div class="acf-label"><label>Button Text</label></div>
-								<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][link][text]" ' . (empty($point['link']['text']) ? '' : 'value="' . $point['link']['text'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--link-text" />
-							</div>
-							<div class="acf-hotspot__field">
-								<button class="acf-hotspot__delete button button">Remove</button>
-							</div>
-						</div></div>
+						<div>
+							<input type="hidden" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][x]" ' . (empty($point['x']) ? '' : 'value="' . $point['x'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--x" />
+							<input type="hidden" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][y]" ' . (empty($point['y']) ? '' : 'value="' . $point['y'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--y" />
+							<div class="acf-input"><div class="acf-input-wrap">
+								<div class="acf-hotspot__field">
+									<div class="acf-label"><label>Title</label></div>
+									<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][title]" ' . (empty($point['title']) ? '' : 'value="' . $point['title'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--title" />
+								</div>
+								<div class="acf-hotspot__field">
+									<div class="acf-label"><label>Description</label></div>
+									<textarea ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][description]" class="acf-hotspot__input acf-hotspot__input--description">'
+										. (empty($point['description']) ? '' : $point['description']) .
+									'</textarea>
+								</div>
+								<div class="acf-hotspot__field">
+									<div class="acf-label"><label>Button Link</label></div>
+									<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][link][url]" ' . (empty($point['link']['url']) ? '' : 'value="' . $point['link']['url'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--link-url" />
+								</div>
+								<div class="acf-hotspot__field">
+									<div class="acf-label"><label>Button Text</label></div>
+									<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][link][text]" ' . (empty($point['link']['text']) ? '' : 'value="' . $point['link']['text'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--link-text" />
+								</div>
+								<div class="acf-hotspot__field">
+									<button class="acf-hotspot__delete button button">Remove</button>
+								</div>
+							</div></div>
+						</div>
 					</div>
 				';
 			}
@@ -288,7 +290,7 @@ class acf_field_hotspots extends acf_field {
 
 
 		// register & include JS
-		wp_register_script( 'acf-input-hotspots', "{$url}assets/js/acf-hotspots-render.js", array('acf-input'), $version, true );
+		wp_register_script( 'acf-input-hotspots', "{$url}assets/js/acf-hotspots-render.js", array('jquery-ui-accordion','acf-input'), $version, true );
 		wp_enqueue_script('acf-input-hotspots');
 
 

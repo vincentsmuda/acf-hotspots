@@ -283,10 +283,11 @@ var HotspotInput = (function($){
             context: this
           });
 
+      $( '.' + class_base + '__information', this.el ).accordion( "refresh" );
+
       return this.points.push(point);
 
     }
-
 
     /**
      *  Sorts all references to the given point
@@ -304,19 +305,24 @@ var HotspotInput = (function($){
     sortabe() {
       let self = this,
           sorted_item = -1;
-      $( '.' + class_base + '__information', this.el ).sortable({
-        // revert: true,
-        handle: '.' + class_base + '__label',
-        start: function( event, ui ) {
-          sorted_item = ui.item.index();
-        },
-        beforeStop: function( event, ui ) {
-          if(sorted_item !== ui.item.index()) {
-            self.sort_points(sorted_item-1, ui.item.index()-1);
+      $( '.' + class_base + '__information', this.el )
+        .accordion({
+          collapsible: true,
+          header: '.' + class_base + '__label'
+        })
+        .sortable({
+          // revert: true,
+          handle: '.' + class_base + '__label',
+          start: function( event, ui ) {
+            sorted_item = ui.item.index();
+          },
+          beforeStop: function( event, ui ) {
+            if(sorted_item !== ui.item.index()) {
+              self.sort_points(sorted_item-1, ui.item.index()-1);
+            }
+            sorted_item = -1;
           }
-          sorted_item = -1;
-        }
-      });
+        });
     }
 
 
