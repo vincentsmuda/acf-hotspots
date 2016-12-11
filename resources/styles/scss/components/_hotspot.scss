@@ -51,15 +51,45 @@
 		&information{
 			clear: both;
 			counter-reset: field_number;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			flex-wrap: wrap;
 		}
 
 		&point-fields{
 			counter-increment: field_number;
+			box-sizing: border-box;
+			// padding: $gutter;
+			width: 33.33333333%;
+			border: 1px solid $color-lightgrey;
+			border-left-width: 0px;
+			border-top-width: 0px;
+
+			&:nth-child(2),
+			// &:nth-child(5),
+			&:nth-child(3n+5){ // 4th + 1 (offset)
+				border-left-width: 1px;
+			}
+
+			&:nth-child(2),
+			&:nth-child(3),
+			&:nth-child(4){
+				border-top-width: 1px;
+			}
+		}
+
+		&field{
+			padding: 10px 12px 15px;
+			border-top: $color-lightgrey solid 1px;
 		}
 
 		&label{
+			padding: $gutter;
+			display: block;
+
 			&:before{
-				content: '#'counter(field_number);
+				content: 'Point: #' counter(field_number);
 			}
 		}
 	}

@@ -114,26 +114,10 @@ class acf_field_hotspots extends acf_field {
 
 		acf_render_field_setting( $field, array(
 			'label'					=> __('Description','acf-hotspots'),
-			'instructions'	=> __('Allow for user to enter a description on a given spot.','acf-hotspots'),
+			'instructions'	=> __('Enable if you would like the description field to use tinymce.','acf-hotspots'),
 			'type'					=> 'true_false',
 			'ui'						=> 1,
 			'name'					=> 'hs_description'
-		));
-
-
-		/**
-		 *
-		 *	Allows for user to decide whether they will allow the custom field's
-		 *	hotspot to support a sub image for a given hotspot.
-		 *
-		 */
-
-		acf_render_field_setting( $field, array(
-			'label'					=> __('Sub Image','acf-hotspots'),
-			'instructions'	=> __('Allow for user to insert an image on a given spot.','acf-hotspots'),
-			'type'					=> 'true_false',
-			'ui'						=> 1,
-			'name'					=> 'hs_sub_image'
 		));
 
 
@@ -237,13 +221,29 @@ class acf_field_hotspots extends acf_field {
 						<strong class="acf-hotspot__label"></strong>
 						<input type="hidden" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][x]" ' . (empty($point['x']) ? '' : 'value="' . $point['x'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--x" />
 						<input type="hidden" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][y]" ' . (empty($point['y']) ? '' : 'value="' . $point['y'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--y" />
-						<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][title]" ' . (empty($point['title']) ? '' : 'value="' . $point['title'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--title" />
-						<textarea ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][description]" class="acf-hotspot__input acf-hotspot__input--description">'
-							. (empty($point['description']) ? '' : $point['description']) .
-						'</textarea>
-						<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][link][url]" ' . (empty($point['link']['url']) ? '' : 'value="' . $point['link']['url'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--link-url" />
-						<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][link][text]" ' . (empty($point['link']['text']) ? '' : 'value="' . $point['link']['text'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--link-text" />
-						<button class="acf-hotspot__delete button button">Remove</button>
+						<div class="acf-input"><div class="acf-input-wrap">
+							<div class="acf-hotspot__field">
+								<div class="acf-label"><label>Title</label></div>
+								<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][title]" ' . (empty($point['title']) ? '' : 'value="' . $point['title'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--title" />
+							</div>
+							<div class="acf-hotspot__field">
+								<div class="acf-label"><label>Description</label></div>
+								<textarea ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][description]" class="acf-hotspot__input acf-hotspot__input--description">'
+									. (empty($point['description']) ? '' : $point['description']) .
+								'</textarea>
+							</div>
+							<div class="acf-hotspot__field">
+								<div class="acf-label"><label>Button Link</label></div>
+								<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][link][url]" ' . (empty($point['link']['url']) ? '' : 'value="' . $point['link']['url'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--link-url" />
+							</div>
+							<div class="acf-hotspot__field">
+								<div class="acf-label"><label>Button Text</label></div>
+								<input type="text" ' . $name_attribute . '="' . $field['name'] . '[points][' . $point_num . '][link][text]" ' . (empty($point['link']['text']) ? '' : 'value="' . $point['link']['text'] . '"') . ' class="acf-hotspot__input acf-hotspot__input--link-text" />
+							</div>
+							<div class="acf-hotspot__field">
+								<button class="acf-hotspot__delete button button">Remove</button>
+							</div>
+						</div></div>
 					</div>
 				';
 			}

@@ -5,9 +5,9 @@ An extension for the Advanced Custom Fields plugin for Wordpress. If you would l
 - Only supports ACF v5 which means the free version of ACF is not supported.
 
 ##TODO
-- Add point deletion capabilities
 - Save image sizes to field
 - Add tinymce to textarea per point
+- Make point textfields prettier
 - x-browser
 - General QA
 
