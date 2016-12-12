@@ -1,6 +1,8 @@
 #ACF Hotspots Extension
 An extension for the Advanced Custom Fields plugin for Wordpress. If you would like to use, grab the acf-hotspots folder and put it into your plugins directory.
 
+![alt tag](assets/images/screen_1.png)
+
 ##Notes
 - Only supports ACF v5 which means the free version of ACF is not supported.
 
