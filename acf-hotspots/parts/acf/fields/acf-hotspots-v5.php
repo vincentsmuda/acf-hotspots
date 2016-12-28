@@ -63,7 +63,7 @@ class acf_field_hotspots extends acf_field {
 		*		The image field that the hotspots use
 		*/
 
-		$this->image = new acf_field_image();
+		$this->image = acf_get_field_type('image');
 
 
 		/*
