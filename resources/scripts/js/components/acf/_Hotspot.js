@@ -258,7 +258,7 @@ var HotspotInput = (function($){
     constructor ($el) {
       this.el               = $el;
       this.id               = this.get_id();
-      this.source_image     = $('.' + class_base + '__upload .acf-image-uploader .view img', $el);
+      this.source_image     = $('.' + class_base + '__upload .acf-image-uploader img', $el);
       this.img_src          = '';
       this.main_image       = getClass( class_base + '__image', this.el[0])[0];
       this.points           = [];
@@ -404,7 +404,7 @@ var HotspotInput = (function($){
           collapsible: true,
           header: '.' + class_base + '__label',
           beforeActivate: ( event, ui ) => {
-            
+
             if(ui.newHeader[0] === undefined) return;
 
             let panel = this.points[ui.newHeader.parent().index()-1];
