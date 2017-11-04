@@ -1,0 +1,117 @@
+/*
+
+	HOTSPOT
+
+*/
+
+.acf-hotspot{
+
+	&__{
+
+		&container{
+			position: relative;
+			counter-reset: point;
+			float: left;
+		}
+
+		&image{
+			position: relative;
+			display: block;
+			margin: 0;
+			padding: 0;
+			max-width: 100%;
+		}
+
+		&point{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 0 !important;
+			height: 0 !important;
+			z-index: 10;
+
+			&:before{
+				counter-increment: point;
+    		content: counter(point);
+				border-radius: 50%;
+				position: relative;
+				display: block;
+				width: 20px;
+				height: 20px;
+				text-align: center;
+				color: $color-white;
+				line-height: 20px;
+				z-index: 10;
+				transform: translate(-50%,-50%);
+				background: rgba(0,0,0,0.25);
+				cursor: move;
+			}
+		}
+
+		&clone-base{
+			display: none;
+		}
+
+		&information{
+			clear: both;
+			counter-reset: field_number;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+
+		&point-fields{
+			counter-increment: field_number;
+			box-sizing: border-box;
+			width: 100%;
+			background: $color-white;
+			border: 1px solid $color-lightgrey;
+			margin-bottom: -1px;
+			transition: opacity $transition-length;
+
+			&--loading{
+				opacity: 0.1 !important;
+				transition: opacity $transition-length;
+			}
+		}
+
+		&field{
+			padding: 10px 12px 15px;
+			border-top: $color-lightgrey solid 1px;
+
+			.mce-container {
+				border: 1px solid $color-lightgrey;
+			}
+
+			&--description {
+				height: 300px;
+			}
+		}
+
+		&label{
+			cursor: move;
+			padding: $gutter;
+			display: block;
+			background: #fdfdfd;
+			position: relative;
+
+			&:before{
+				content: 'Point: #' counter(field_number);
+			}
+
+			&.ui-accordion-header-active{
+				.acf-hotspot__toggle{
+					transform: translateY(-50%) rotate(0deg);
+				}
+			}
+		}
+
+		&toggle{
+			position: absolute;
+			right: $gutter;
+			top: 50%;
+			transform: translate(0%,-50%) rotate(180deg);
+		}
+	}
+}
